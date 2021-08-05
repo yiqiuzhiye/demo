@@ -1,0 +1,22 @@
+server:
+  port: 10086
+spring:
+  application:
+    name: eureka
+  cloud:
+    nacos:
+      config:
+        enabled: false
+logging:
+  level:
+    com.netflix.eureka: info
+    com.netflix.discovery: info
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka/
+  instance:
+    prefer-ip-address: true
+
