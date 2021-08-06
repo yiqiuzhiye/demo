@@ -1,0 +1,46 @@
+server:
+  port: 5003
+spring:
+  application:
+    name: crss-mc-codegen
+  profiles:
+    active: dev
+  redis:
+    host: localhost
+    port: 6379
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://10.14.32.231:3306/crss_message?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true
+    username: root
+    password: crss123456
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      connection-test-query: select 1
+      minimum-idle: 10
+      maximum-pool-size: 100
+      auto-commit: true
+      idle-timeout: 30000
+  resources:
+    static-locations: classpath:/static/,classpath:/views/
+    #配置中心
+    # cloud:
+    #  config:
+    #   discovery:
+    #    enabled: true
+    #    service-id: crss-config
+  main:
+    allow-bean-definition-overriding: true
+# 注册中心配置
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:9010/eureka/
+logging:
+  level:
+    root: info
+## 直接放行URL
+#ignore:
+#  urls:
+#    - /**
