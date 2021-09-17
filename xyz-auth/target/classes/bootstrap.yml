@@ -18,6 +18,6 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://crss-registry:9010/eureka/
+      defaultZone: http://xyz-eureka:9010/eureka/
   instance:
     prefer-ip-address: true
