@@ -29,7 +29,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cloudminds.crss.codegen.entity.GenConfig;
 import com.cloudminds.crss.codegen.service.SysGeneratorService;
-import com.cloudminds.crss.common.core.util.R;
+import com.demo.xyz.common.core.util.R;
 
 import cn.hutool.core.io.IoUtil;
 import lombok.AllArgsConstructor;
