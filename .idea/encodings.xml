@@ -4,6 +4,7 @@
     <file url="file://$PROJECT_DIR$/xyz-auth/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xyz-common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xyz-eureka/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/xyz-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/xyz-generate/src/main/java" charset="UTF-8" />
   </component>
 </project>

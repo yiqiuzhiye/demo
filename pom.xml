@@ -20,6 +20,7 @@
         <module>xyz-auth</module>
         <module>xyz-generate</module>
         <module>xyz-common</module>
+        <module>xyz-gateway</module>
     </modules>
 
     <properties>
