@@ -17,20 +17,9 @@
     </properties>
 
     <dependencies>
-        <!--mybatis-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <!--common-->
-        <dependency>
-            <groupId>com.cloudminds</groupId>
-            <artifactId>crss-common-core</artifactId>
-            <version>${project.version}</version>
         </dependency>
 
         <!--安全模块

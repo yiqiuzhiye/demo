@@ -1,0 +1,44 @@
+package ${package.Service};
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${package.Entity}.${entity};
+
+/**
+ * <p>
+ * $!{entity} 服务类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public interface ${table.serviceName} {
+    /**
+     * ${entity}简单分页查询
+     * @param page
+     * @param vo
+     * @return
+     */
+    IPage<${entity}> listByQuery(Page page, ${entity}QueryVo vo);
+
+    /**
+     * 通过id查询记录
+     * @param id
+     * @return
+     */
+    ${entity} getById(Integer id);
+
+    /**
+     * ${entity}添加或修改
+     * @param ${table.entityPath}
+     * @return
+     */
+    Boolean addOrUpdate(${entity} ${table.entityPath});
+
+    /**
+     * 通过id删除一条记录
+     * @param id
+     * @return
+     */
+    Boolean deleteById(Integer id);
+}

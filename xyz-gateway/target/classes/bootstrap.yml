@@ -1,0 +1,18 @@
+server:
+  port: 9016
+  servlet:
+    context-path: /xyz
+zuul:
+  # ribbon-isolation-strategy: THREAD  #zuul默认是使用信号量，如果使用线程池，需要在这里配置
+  # thread-pool:
+  #   use-separate-thread-pools: true  #每个路由使用独立的线程池，默认的HystrixThreadPoolkey 将与每个路由的服务标识相同，没必要为每个服务单独设置线程池，因为网关主要还是转发和处理简单业务逻辑为主
+  routes:
+    crss-auth: /auth/**
+# 注册中心配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://xyz-registry:9010/eureka/
+  instance:
+    prefer-ip-address: true
+

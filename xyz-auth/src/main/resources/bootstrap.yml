@@ -4,7 +4,7 @@ spring:
   application:
     name: xyz-auth
   datasource:
-    url: jdbc:mysql://10.14.32.245:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true
+    url: jdbc:mysql://10.14.32.245:3306/x_auth?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true
     username: root
     password: crss123456
     driver-class-name: com.mysql.jdbc.Driver
@@ -21,3 +21,5 @@ eureka:
       defaultZone: http://xyz-eureka:10086/eureka/
   instance:
     prefer-ip-address: true
+user:
+  dir: demo.xyz-auth
