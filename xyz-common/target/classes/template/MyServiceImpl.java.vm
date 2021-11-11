@@ -1,0 +1,80 @@
+package ${package.ServiceImpl};
+
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
+import lombok.AllArgsConstructor;
+
+/**
+ * <p>
+ * $!{entity} 服务实现类
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Slf4j
+@Service("${table.entityPath}Service")
+@AllArgsConstructor
+public class ${table.serviceImplName} implements ${table.serviceName} {
+
+    private final ${table.mapperName} ${table.entityPath}Mapper;
+
+    /**
+     * ${table.comment}简单分页查询
+     * @param page
+     * @param vo
+     * @return
+     */
+    @Override
+    public IPage<${entity}> listByQuery(Page page, ${table.entityPath}QueryVo vo) {
+        return ${table.entityPath}Mapper.selectPage(page, doQueryVo(vo));
+    }
+
+    /**
+     * 通过id查询记录
+     * @param id
+     * @return
+     */
+    @Override
+    public ${entity} getById(Integer id){
+        return ${table.entityPath}Mapper.selectById(id);
+    }
+
+    /**
+     * ${entity}添加或修改
+     * @param ${table.entityPath}
+     * @return
+     */
+    @Override
+    public Boolean addOrUpdate(${entity} ${table.entityPath}){
+        if(vo.getId() == null){
+            return retBool(${table.entityPath}Mapper.insert(${table.entityPath}));
+        }else{
+            return retBool(${table.entityPath}Mapper.updateById(${table.entityPath}));
+        }
+    }
+
+    /**
+     * 通过id删除一条记录
+     * @param id
+     * @return
+     */
+    @Override
+    public Boolean deleteById(Integer id){
+        return retBool(${table.entityPath}Mapper.deleteById(id));
+    }
+
+    /**
+    * 处理查询参数
+    * @param vo
+    * @return
+    */
+    public LambdaQueryWrapper doQueryVo(${table.entityPath}QueryVo vo){
+        LambdaQueryWrapper queryWrapper = new LambdaQueryWrapper();
+        return queryWrapper;
+    }
+
+}
