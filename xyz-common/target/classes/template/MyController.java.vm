@@ -1,7 +1,13 @@
 package ${package.Controller};
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+import ${package.Other}.${table.entityName}QueryVo;
+import ${package.Other}.${table.entityName}AddReqVo;
+import ${package.Other}.${table.entityName}RespVo;
 import com.demo.xyz.common.core.R;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.AllArgsConstructor;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.ArrayList;
 
 /**
  * <p>
@@ -39,15 +47,15 @@ public class ${table.controllerName} {
     @GetMapping("/listByQuery")
     public R<IPage<${entity}ResqVo>> listByQuery(Page page, ${entity}QueryVo vo) {
         IPage<${entity}> ${table.entityPath}Page = ${table.entityPath}Service.listByQuery(page, vo);
-        IPage<${entity}ResqVo>> ${entity}ResqPage = new Page<>();
-        List<${entity}ResqVo>> ${entity}ResqList = new ArrayList<>();
+        IPage<${entity}ResqVo> ${table.entityPath}ResqPage = new Page<>();
+        List<${entity}ResqVo> ${table.entityPath}ResqList = new ArrayList<>();
         ${table.entityPath}Page.getRecords().forEach(t -> {
             ${entity}ResqVo vo = new ${entity}ResqVo();
             BeanUtils.copyProperties(t,vo);
-            ${entity}ResqList.add(vo)
+            ${table.entityPath}ResqList.add(vo);
         });
-        ${entity}ResqPage.setRecords(${entity}ResqList);
-        return new R<>(${entity}ResqPage);
+        ${table.entityPath}ResqPage.setRecords(${table.entityPath}ResqList);
+        return new R<>(${table.entityPath}ResqPage);
     }
 
     /**
@@ -57,7 +65,7 @@ public class ${table.controllerName} {
      */
     @GetMapping("/getById")
     public R<${entity}RespVo> getById(@RequestParam("id") Integer id) {
-        ${entity} ${table.entityPath} = ${table.entityPath}Service.getById(id)
+        ${entity} ${table.entityPath} = ${table.entityPath}Service.getById(id);
         ${entity}RespVo vo = new ${entity}RespVo();
         BeanUtils.copyProperties(${table.entityPath},vo);
         return new R<>(vo);
@@ -70,7 +78,9 @@ public class ${table.controllerName} {
      */
     @PostMapping("/add")
     public R add(@RequestBody ${entity}AddReqVo vo) {
-        return new R<>(${table.entityPath}Service.addOrUpdate(vo));
+        ${entity} ${table.entityPath} = new ${entity}();
+        BeanUtils.copyProperties(vo,${table.entityPath});
+        return new R<>(${table.entityPath}Service.addOrUpdate(${table.entityPath}));
     }
 
     /**

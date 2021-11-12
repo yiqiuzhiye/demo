@@ -1,0 +1,21 @@
+package ${package.Other}.${table.entityName}QueryVo;
+
+import java.io.Serializable;
+import lombok.Data;
+
+/**
+ * ${entity}RespVo
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+public class ${table.entityName}QueryVo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * id
+     */
+    private Integer id;
+}

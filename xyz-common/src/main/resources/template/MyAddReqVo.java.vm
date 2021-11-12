@@ -1,0 +1,29 @@
+package ${package.Other}.${table.entityName}AddReqVo;
+
+import java.io.Serializable;
+import lombok.Data;
+
+/**
+ * ${entity}RespVo
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+public class ${table.entityName}AddReqVo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach($field in ${table.fields})
+#if("$!field.propertyName" != "createTime" && "$!field.propertyName" != "updateTime"
+    && "$!field.propertyName" != "createBy" && "$!field.propertyName" != "updateBy"
+    && !${field.logicDeleteField} && !${field.versionField})
+#if("$!field.comment" != "")
+    /**
+     * ${field.comment}
+     */
+#end
+    private ${field.propertyType} ${field.propertyName};
+#end
+#end
+}

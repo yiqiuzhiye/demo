@@ -1,11 +1,17 @@
 package ${package.ServiceImpl};
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+import ${package.Other}.${table.entityName}QueryVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import lombok.AllArgsConstructor;
+
+import static com.baomidou.mybatisplus.extension.toolkit.SqlHelper.retBool;
 
 /**
  * <p>
@@ -29,7 +35,7 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
      * @return
      */
     @Override
-    public IPage<${entity}> listByQuery(Page page, ${table.entityPath}QueryVo vo) {
+    public IPage<${entity}> listByQuery(Page page, ${entity}QueryVo vo) {
         return ${table.entityPath}Mapper.selectPage(page, doQueryVo(vo));
     }
 
@@ -50,7 +56,7 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
      */
     @Override
     public Boolean addOrUpdate(${entity} ${table.entityPath}){
-        if(vo.getId() == null){
+        if(${table.entityPath}.getId() == null){
             return retBool(${table.entityPath}Mapper.insert(${table.entityPath}));
         }else{
             return retBool(${table.entityPath}Mapper.updateById(${table.entityPath}));
@@ -72,7 +78,7 @@ public class ${table.serviceImplName} implements ${table.serviceName} {
     * @param vo
     * @return
     */
-    public LambdaQueryWrapper doQueryVo(${table.entityPath}QueryVo vo){
+    public LambdaQueryWrapper doQueryVo(${entity}QueryVo vo){
         LambdaQueryWrapper queryWrapper = new LambdaQueryWrapper();
         return queryWrapper;
     }

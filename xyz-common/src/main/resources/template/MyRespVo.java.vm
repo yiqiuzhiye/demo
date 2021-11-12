@@ -1,0 +1,27 @@
+package ${package.Other}.${table.entityName}RespVo;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import lombok.Data;
+
+/**
+ * ${entity}RespVo
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@Data
+public class ${table.entityName}RespVo implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+#foreach($field in ${table.fields})
+#if(!${field.logicDeleteField} && !${field.versionField})
+#if("$!field.comment" != "")
+    /**
+     * ${field.comment}
+     */
+#end
+    private ${field.propertyType} ${field.propertyName};
+#end
+#end
+}

@@ -16,6 +16,7 @@ import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -30,8 +31,9 @@ public class CodeGenerator {
     /**
      * 策略配置
      */
-    private static StrategyConfig.Builder strategyConfig() {
-        return new StrategyConfig.Builder().addInclude("staff"); // 设置需要生成的表名
+    private static StrategyConfig.Builder strategyConfig(String table) {
+
+        return new StrategyConfig.Builder().addInclude(table); // 设置需要生成的表名
     }
 
     /**
@@ -60,9 +62,7 @@ public class CodeGenerator {
      */
     private static InjectionConfig.Builder injectionConfig() {
         // 测试自定义输出文件之前注入操作，该操作再执行生成代码前 debug 查看
-        return new InjectionConfig.Builder().beforeOutputFile((tableInfo, objectMap) -> {
-            System.out.println("tableInfo: " + tableInfo.getEntityName() + " objectMap: " + objectMap.size());
-        });
+        return new InjectionConfig.Builder();
     }
 
     public static void main(String[] args) {
@@ -96,11 +96,21 @@ public class CodeGenerator {
 //                .build();
 
         AutoGenerator generator = new AutoGenerator(DATA_SOURCE_CONFIG);
-        generator.strategy(strategyConfig().build());
+        String table = scanner("表名");
+        Map<String, String> customFile = new HashMap<>();
+        String className = table.substring(0,1).toUpperCase() + table.substring(1);
+        //customFile.put("Staff.java", "/template/Test.java");
+        customFile.put(className + "QueryVo.java", "/template/MyQueryVo.java");
+//        customFile.put(className + "AddReqVo.java", "/template/MyAddReqVo.java.vm");
+        generator.injection(injectionConfig().customFile(customFile).build());
+
+
+        generator.strategy(strategyConfig(table).entityBuilder().versionColumnName("version").logicDeleteColumnName("status").build());
         generator.template(templateConfig()
                 .service("/template/MyService.java")
                 .serviceImpl("/template/MyServiceImpl.java")
                 .controller("/template/MyController.java")
+                .entity("/template/MyEntity.java")
                 .build());
         generator.global(globalConfig().author("jiahong.li").build());
 
@@ -116,12 +126,7 @@ public class CodeGenerator {
         pathInfo.put(OutputFile.serviceImpl, classPack+"\\service\\impl");
         pathInfo.put(OutputFile.mapper, classPack+"\\mapper");
         pathInfo.put(OutputFile.mapperXml, xmlPack);
-        generator.packageInfo(packageConfig().pathInfo(pathInfo).parent("com.demo.xyz."+module.substring(module.indexOf("-")+1,module.length())).build());
-
-        Map<String, String> customFile = new HashMap<>();
-        customFile.put("StaffResqVo.java", "/templates/test.vm");
-        customFile.put("StaffResqVo.java", "/templates/test.vm");
-        customFile.put("StaffResqVo.java", "/templates/test.vm");
+        generator.packageInfo(packageConfig().pathInfo(pathInfo).parent("com.demo.xyz").moduleName(module.substring(module.indexOf("-")+1,module.length())).build());
         generator.execute();
 
 
