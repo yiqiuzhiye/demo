@@ -3,35 +3,35 @@ package com.demo.xyz.auth.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * 
+ * 操作员
  *
- * @author jiahong.li
- * @since 2021-11-12
+ * @author Jiahong.Li
+ * @since 2021-11-17
  */
 @Data
-@TableName("staff")
+@TableName("t_staff")
 public class Staff implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
 
     /**
-     * ID
+     * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 租户ID
+     * 租户code
      */
-    private Integer tenantId;
+    private String tenantCode;
 
     /**
      * 姓名
@@ -59,18 +59,12 @@ public class Staff implements Serializable {
     private String email;
 
     /**
-     * 状态 1：有效9：删除
-     */
-    @TableLogic
-    private String status;
-
-    /**
      * 创建人
      */
     private String createBy;
 
     /**
-     * 修改人
+     * 最后修改人
      */
     private String updateBy;
 
@@ -89,4 +83,10 @@ public class Staff implements Serializable {
      */
     @Version
     private Integer version;
+
+    /**
+     * 状态 1：有效9：删除
+     */
+    @TableLogic(value = "1", delval = "9")
+    private Boolean status;
 }

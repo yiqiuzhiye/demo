@@ -1,45 +1,39 @@
 package com.demo.xyz.auth.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.demo.xyz.auth.entity.Staff;
-import com.demo.xyz.auth.other.StaffQueryVo;
+import com.demo.xyz.auth.vo.StaffQueryVo;
+import com.demo.xyz.auth.vo.StaffAddReqVo;
+import com.demo.xyz.auth.vo.StaffRespVo;
 
 /**
- * <p>
- * Staff 服务类
- * </p>
+ * 操作员服务类
  *
- * @author jiahong.li
- * @since 2021-11-12
+ * @author Jiahong.Li
+ * @since 2021-11-17
  */
-public interface IStaffService {
+public interface IStaffService extends IService<Staff> {
+
     /**
-     * Staff简单分页查询
-     * @param page
+     * 简单分页查询
+     * @param page 分页对象
      * @param vo
-     * @return
+     * @return R
      */
-    IPage<Staff> listByQuery(Page page, StaffQueryVo vo);
+    Page listByQuery(Page page, StaffQueryVo vo);
 
     /**
      * 通过id查询记录
      * @param id
-     * @return
+     * @return R
      */
-    Staff getById(Integer id);
+    StaffRespVo findById(Integer id);
 
     /**
-     * Staff添加或修改
-     * @param staff
-     * @return
+     * 新增或修改记录
+     * @param vo
+     * @return R
      */
-    Boolean addOrUpdate(Staff staff);
-
-    /**
-     * 通过id删除一条记录
-     * @param id
-     * @return
-     */
-    Boolean deleteById(Integer id);
+    Boolean addOrUpdate(StaffAddReqVo vo);
 }
