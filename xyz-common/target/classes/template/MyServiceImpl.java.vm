@@ -1,22 +1,24 @@
 package ${package.ServiceImpl};
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 import ${package.Service}.${table.serviceName};
-import ${package.Entity}.${entity};
 import ${package.Other}.${table.entityName}QueryVo;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import org.springframework.stereotype.Service;
-import lombok.extern.slf4j.Slf4j;
+import ${package.Other}.${table.entityName}AddReqVo;
+import ${package.Other}.${table.entityName}RespVo;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
-import static com.baomidou.mybatisplus.extension.toolkit.SqlHelper.retBool;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * <p>
- * $!{entity} 服务实现类
- * </p>
+ * $!{table.comment}服务实现类
  *
  * @author ${author}
  * @since ${date}
@@ -24,63 +26,61 @@ import static com.baomidou.mybatisplus.extension.toolkit.SqlHelper.retBool;
 @Slf4j
 @Service("${table.entityPath}Service")
 @AllArgsConstructor
-public class ${table.serviceImplName} implements ${table.serviceName} {
-
-    private final ${table.mapperName} ${table.entityPath}Mapper;
-
-    /**
-     * ${table.comment}简单分页查询
-     * @param page
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+/**
+     * 简单分页查询
+     * @param page 分页对象
      * @param vo
-     * @return
+     * @return R
      */
     @Override
-    public IPage<${entity}> listByQuery(Page page, ${entity}QueryVo vo) {
-        return ${table.entityPath}Mapper.selectPage(page, doQueryVo(vo));
+    public Page listByQuery(Page page, ${entity}QueryVo vo) {
+        Page response = this.page(page, createQueryWrapper(vo));
+        List<${entity}RespVo> respVos = new ArrayList<>();
+        response.getRecords().forEach(t -> {
+        ${entity}RespVo respVo = new ${entity}RespVo();
+        BeanUtils.copyProperties(t,respVo);
+        respVos.add(respVo);
+        });
+        response.setRecords(respVos);
+        return response;
     }
 
     /**
      * 通过id查询记录
      * @param id
-     * @return
+     * @return R
      */
     @Override
-    public ${entity} getById(Integer id){
-        return ${table.entityPath}Mapper.selectById(id);
+    public ${entity}RespVo findById(Integer id) {
+        ${entity} ${table.entityPath} = this.getById(id);
+        ${entity}RespVo vo = new ${entity}RespVo();
+        BeanUtils.copyProperties(${table.entityPath},vo);
+        return vo;
     }
 
     /**
-     * ${entity}添加或修改
-     * @param ${table.entityPath}
-     * @return
+     * 新增或修改记录
+     * @param vo
+     * @return R
      */
     @Override
-    public Boolean addOrUpdate(${entity} ${table.entityPath}){
-        if(${table.entityPath}.getId() == null){
-            return retBool(${table.entityPath}Mapper.insert(${table.entityPath}));
-        }else{
-            return retBool(${table.entityPath}Mapper.updateById(${table.entityPath}));
+    public Boolean addOrUpdate(${entity}AddReqVo vo) {
+        ${entity} ${table.entityPath} = new ${entity}();
+        BeanUtils.copyProperties(vo,${table.entityPath});
+        return this.saveOrUpdate(${table.entityPath});
+    }
+
+    /**
+     * 处理查询参数
+     * @param vo
+     * @return
+     */
+    public LambdaQueryWrapper createQueryWrapper(${entity}QueryVo vo){
+        LambdaQueryWrapper<${entity}> queryWrapper = new LambdaQueryWrapper();
+        if(vo.getId() != null){
+            queryWrapper.eq(${entity}::getId,vo.getId());
         }
-    }
-
-    /**
-     * 通过id删除一条记录
-     * @param id
-     * @return
-     */
-    @Override
-    public Boolean deleteById(Integer id){
-        return retBool(${table.entityPath}Mapper.deleteById(id));
-    }
-
-    /**
-    * 处理查询参数
-    * @param vo
-    * @return
-    */
-    public LambdaQueryWrapper doQueryVo(${entity}QueryVo vo){
-        LambdaQueryWrapper queryWrapper = new LambdaQueryWrapper();
         return queryWrapper;
     }
-
 }

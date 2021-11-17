@@ -4,7 +4,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * ${entity}RespVo
+ * 新增/修改$!{table.comment}
  *
  * @author ${author}
  * @since ${date}

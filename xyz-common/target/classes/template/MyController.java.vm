@@ -2,31 +2,23 @@ package ${package.Controller};
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import ${package.Service}.${table.serviceName};
-import ${package.Entity}.${entity};
 import ${package.Other}.${table.entityName}QueryVo;
 import ${package.Other}.${table.entityName}AddReqVo;
 import ${package.Other}.${table.entityName}RespVo;
 import com.demo.xyz.common.core.R;
-import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import lombok.extern.slf4j.Slf4j;
 import lombok.AllArgsConstructor;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
-import java.util.ArrayList;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <p>
- * $!{entity} 前端控制器
- * </p>
+ * $!{table.comment}controller
  *
  * @author ${author}
  * @since ${date}
@@ -45,17 +37,8 @@ public class ${table.controllerName} {
      * @return R
      */
     @GetMapping("/listByQuery")
-    public R<IPage<${entity}ResqVo>> listByQuery(Page page, ${entity}QueryVo vo) {
-        IPage<${entity}> ${table.entityPath}Page = ${table.entityPath}Service.listByQuery(page, vo);
-        IPage<${entity}ResqVo> ${table.entityPath}ResqPage = new Page<>();
-        List<${entity}ResqVo> ${table.entityPath}ResqList = new ArrayList<>();
-        ${table.entityPath}Page.getRecords().forEach(t -> {
-            ${entity}ResqVo vo = new ${entity}ResqVo();
-            BeanUtils.copyProperties(t,vo);
-            ${table.entityPath}ResqList.add(vo);
-        });
-        ${table.entityPath}ResqPage.setRecords(${table.entityPath}ResqList);
-        return new R<>(${table.entityPath}ResqPage);
+    public R<Page<${entity}RespVo>> listByQuery(Page page, ${entity}QueryVo vo) {
+        return new R<>(${table.entityPath}Service.listByQuery(page, vo));
     }
 
     /**
@@ -65,10 +48,7 @@ public class ${table.controllerName} {
      */
     @GetMapping("/getById")
     public R<${entity}RespVo> getById(@RequestParam("id") Integer id) {
-        ${entity} ${table.entityPath} = ${table.entityPath}Service.getById(id);
-        ${entity}RespVo vo = new ${entity}RespVo();
-        BeanUtils.copyProperties(${table.entityPath},vo);
-        return new R<>(vo);
+        return new R<>(${table.entityPath}Service.findById(id));
     }
 
     /**
@@ -78,9 +58,7 @@ public class ${table.controllerName} {
      */
     @PostMapping("/add")
     public R add(@RequestBody ${entity}AddReqVo vo) {
-        ${entity} ${table.entityPath} = new ${entity}();
-        BeanUtils.copyProperties(vo,${table.entityPath});
-        return new R<>(${table.entityPath}Service.addOrUpdate(${table.entityPath}));
+        return new R<>(${table.entityPath}Service.addOrUpdate(vo));
     }
 
     /**
@@ -90,9 +68,7 @@ public class ${table.controllerName} {
      */
     @PutMapping("/updateById")
     public R updateById(@RequestBody ${entity}AddReqVo vo) {
-        ${entity} ${table.entityPath} = new ${entity}();
-        BeanUtils.copyProperties(vo,${table.entityPath});
-        return new R<>(${table.entityPath}Service.addOrUpdate(${table.entityPath}));
+        return new R<>(${table.entityPath}Service.addOrUpdate(vo));
     }
 
     /**
@@ -100,8 +76,8 @@ public class ${table.controllerName} {
      * @param id
      * @return R
      */
-    @DeleteMapping("/delete")
+    @DeleteMapping("/deleteById")
     public R deleteById(@RequestParam("id") Integer id) {
-        return new R<>(${table.entityPath}Service.deleteById(id));
+        return new R<>(${table.entityPath}Service.removeById(id));
     }
 }

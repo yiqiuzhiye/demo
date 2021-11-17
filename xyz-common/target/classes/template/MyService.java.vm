@@ -1,45 +1,39 @@
 package ${package.Service};
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import ${package.Entity}.${entity};
 import ${package.Other}.${table.entityName}QueryVo;
+import ${package.Other}.${table.entityName}AddReqVo;
+import ${package.Other}.${table.entityName}RespVo;
 
 /**
- * <p>
- * $!{entity} 服务类
- * </p>
+ * $!{table.comment}服务类
  *
  * @author ${author}
  * @since ${date}
  */
-public interface ${table.serviceName} {
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+
     /**
-     * ${entity}简单分页查询
-     * @param page
+     * 简单分页查询
+     * @param page 分页对象
      * @param vo
-     * @return
+     * @return R
      */
-    IPage<${entity}> listByQuery(Page page, ${entity}QueryVo vo);
+    Page listByQuery(Page page, ${entity}QueryVo vo);
 
     /**
      * 通过id查询记录
      * @param id
-     * @return
+     * @return R
      */
-    ${entity} getById(Integer id);
+    ${entity}RespVo findById(Integer id);
 
     /**
-     * ${entity}添加或修改
-     * @param ${table.entityPath}
-     * @return
+     * 新增或修改记录
+     * @param vo
+     * @return R
      */
-    Boolean addOrUpdate(${entity} ${table.entityPath});
-
-    /**
-     * 通过id删除一条记录
-     * @param id
-     * @return
-     */
-    Boolean deleteById(Integer id);
+    Boolean addOrUpdate(${entity}AddReqVo vo);
 }

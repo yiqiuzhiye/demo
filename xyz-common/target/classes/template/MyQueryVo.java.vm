@@ -4,7 +4,7 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * ${entity}RespVo
+ * $!{table.comment}查询参数
  *
  * @author ${author}
  * @since ${date}
