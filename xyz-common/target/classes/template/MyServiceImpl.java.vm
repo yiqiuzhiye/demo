@@ -38,9 +38,9 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
         Page response = this.page(page, createQueryWrapper(vo));
         List<${entity}RespVo> respVos = new ArrayList<>();
         response.getRecords().forEach(t -> {
-        ${entity}RespVo respVo = new ${entity}RespVo();
-        BeanUtils.copyProperties(t,respVo);
-        respVos.add(respVo);
+            ${entity}RespVo respVo = new ${entity}RespVo();
+            BeanUtils.copyProperties(t,respVo);
+            respVos.add(respVo);
         });
         response.setRecords(respVos);
         return response;
@@ -54,6 +54,9 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     public ${entity}RespVo findById(Integer id) {
         ${entity} ${table.entityPath} = this.getById(id);
+        if(${table.entityPath} == null){
+            return ${table.entityPath};
+        }
         ${entity}RespVo vo = new ${entity}RespVo();
         BeanUtils.copyProperties(${table.entityPath},vo);
         return vo;
