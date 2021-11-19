@@ -12,12 +12,14 @@
         <module name="xyz-common" />
         <module name="xyz-generate" />
         <module name="xyz-gateway" />
+        <module name="xyz-client" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="xyz-auth" options="-parameters" />
+      <module name="xyz-client" options="-parameters" />
       <module name="xyz-common" options="-parameters" />
       <module name="xyz-eureka" options="-parameters" />
       <module name="xyz-gateway" options="-parameters" />

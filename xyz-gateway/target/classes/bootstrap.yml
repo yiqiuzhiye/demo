@@ -22,4 +22,9 @@ eureka:
   instance:
     prefer-ip-address: true
 
+jwt:
+  secret: secret
+  expiration: 604800
+  header: Authorization
+
 
