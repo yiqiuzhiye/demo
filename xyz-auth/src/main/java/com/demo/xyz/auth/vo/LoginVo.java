@@ -7,4 +7,6 @@ public class LoginVo {
     private String phone;
 
     private String username;
+
+    private String password;
 }

@@ -1,27 +1,15 @@
-package com.demo.xyz.auth.entity;
+package com.demo.xyz.common.core;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import lombok.Data;
 
-/**
- * 操作员
- *
- * @author Jiahong.Li
- * @since 2021-11-23
- */
+import java.time.LocalDateTime;
+
 @Data
-@TableName("t_staff")
-public class Staff implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-
+public class StaffCache {
     /**
      * 主键
      */
@@ -29,7 +17,7 @@ public class Staff implements Serializable {
     private Integer id;
 
     /**
-     * 租户id
+     * 租户code
      */
     private String tenantId;
 
@@ -59,16 +47,6 @@ public class Staff implements Serializable {
     private String email;
 
     /**
-     * 创建人
-     */
-    private String createBy;
-
-    /**
-     * 最后修改人
-     */
-    private String updateBy;
-
-    /**
      * 创建时间
      */
     private LocalDateTime createTime;
@@ -77,12 +55,6 @@ public class Staff implements Serializable {
      * 修改时间
      */
     private LocalDateTime updateTime;
-
-    /**
-     * 乐观锁版本号
-     */
-    @Version
-    private Integer version;
 
     /**
      * 状态 1：有效9：删除

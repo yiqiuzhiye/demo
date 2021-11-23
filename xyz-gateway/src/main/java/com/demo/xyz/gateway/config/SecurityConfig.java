@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 定制我们自己的 session 策略：调整为让 Spring Security 不创建和使用 session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // 请求进行拦截 验证 accessToken
-        http.authorizeRequests().anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(restAccessDeniedHandler)
+        http.authorizeRequests().anyRequest().authenticated().and().antMatcher("/v1/login").exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).accessDeniedHandler(restAccessDeniedHandler)
                 .and()
                 .cors()
                 // 关闭csrf防护

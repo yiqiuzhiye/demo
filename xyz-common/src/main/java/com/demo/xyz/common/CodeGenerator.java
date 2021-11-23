@@ -76,15 +76,15 @@ public class CodeGenerator {
             generator.injection(injectionConfig().customFile(customFile).build());
 
             generator.template(templateConfig()
-                    .service("/template/MyService.java")
-                    .serviceImpl("/template/MyServiceImpl.java")
-                    .controller("/template/MyController.java")
+                    .service("/template/MyService1.java")
+                    .serviceImpl("/template/MyServiceImpl1.java")
+                    .controller("/template/MyController1.java")
                     .entity("/template/MyEntity.java")
                     .build());
         }else {
             generator.template(templateConfig()
-                    .service("/template/MyService.java")
-                    .serviceImpl("/template/MyServiceImpl.java")
+                    .service("/template/MyService1.java")
+                    .serviceImpl("/template/MyServiceImpl1.java")
                     .disable(TemplateType.CONTROLLER)
                     .entity("/template/MyEntity.java")
                     .build());

@@ -7,7 +7,7 @@ import lombok.Data;
  * 新增/修改操作员
  *
  * @author Jiahong.Li
- * @since 2021-11-17
+ * @since 2021-11-23
  */
 @Data
 public class StaffAddReqVo implements Serializable {
@@ -19,9 +19,9 @@ public class StaffAddReqVo implements Serializable {
      */
     private Integer id;
     /**
-     * 租户code
+     * 租户id
      */
-    private String tenantCode;
+    private String tenantId;
     /**
      * 姓名
      */

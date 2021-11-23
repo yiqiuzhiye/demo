@@ -8,7 +8,7 @@ import lombok.Data;
  * 操作员接口返回
  *
  * @author Jiahong.Li
- * @since 2021-11-17
+ * @since 2021-11-23
  */
 @Data
 public class StaffRespVo implements Serializable {
@@ -19,9 +19,9 @@ public class StaffRespVo implements Serializable {
      */
     private Integer id;
     /**
-     * 租户code
+     * 租户id
      */
-    private String tenantCode;
+    private String tenantId;
     /**
      * 姓名
      */

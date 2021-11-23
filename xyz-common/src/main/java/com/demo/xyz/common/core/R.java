@@ -68,4 +68,70 @@ public class R<T> implements Serializable {
         this.code = 500;
         this.message = e.getMessage();
     }
+
+    /**
+     * 响应
+     *
+     * @param code
+     * @param msg
+     * @param <T>
+     * @return
+     */
+    public static <T> R<T> error(final int code, final String msg) {
+        return new R(code, msg);
+    }
+
+    /**
+     * 响应
+     *
+     * @param msg
+     * @param <T>
+     * @return
+     */
+    public static <T> R<T> error(final String msg) {
+        return new R(msg);
+    }
+
+    /**
+     * 成功结果
+     *
+     * @return
+     */
+    public static R success() {
+        return new R(0, "success", null);
+    }
+
+    /**
+     * 获取成功后的接口
+     *
+     * @param response
+     * @param <T>
+     * @return
+     */
+    public static <T> T getSuccessData(R<T> response) {
+        if (response == null) {
+            throw new ServiceException(500,"系统异常");
+        }
+        final boolean isSuccess = R.isSuccess(response);
+        if (isSuccess) {
+            return response.getData();
+        }
+        throw new ServiceException(response.getCode(), response.getMessage());
+    }
+
+    /**
+     * 是否成功
+     *
+     * @param response
+     * @return
+     */
+    public static boolean isSuccess(R response) {
+        if (response == null) {
+            return false;
+        }
+        if (Objects.equals(200, response.getCode())) {
+            return true;
+        }
+        return false;
+    }
 }

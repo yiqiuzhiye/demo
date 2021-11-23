@@ -1,12 +1,12 @@
-package com.demo.xyz.auth.controller;
+package ${package.Controller};
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.demo.xyz.auth.entity.Staff;
-import com.demo.xyz.auth.service.IStaffService;
-import com.demo.xyz.auth.vo.StaffAddReqVo;
-import com.demo.xyz.auth.vo.StaffQueryVo;
-import com.demo.xyz.auth.vo.StaffRespVo;
+import ${package.Entity}.${entity};
+import ${package.Service}.${table.serviceName};
+import ${package.Other}.${table.entityName}AddReqVo;
+import ${package.Other}.${table.entityName}QueryVo;
+import ${package.Other}.${table.entityName}RespVo;
 import com.demo.xyz.common.core.R;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,17 +24,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 操作员controller
+ * $!{table.comment}controller
  *
- * @author Jiahong.Li
- * @since 2021-11-23
+ * @author ${author}
+ * @since ${date}
  */
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/v1/staff")
-public class StaffController {
-    private final IStaffService staffService;
+@RequestMapping("/v1/${table.entityPath}")
+public class ${table.controllerName} {
+    private final ${table.serviceName} ${table.entityPath}Service;
 
     /**
      * 简单分页查询
@@ -43,11 +43,11 @@ public class StaffController {
      * @return R
      */
     @GetMapping("/listByQuery")
-    public R<Page<StaffRespVo>> listByQuery(Page page, StaffQueryVo vo) {
-        Page<StaffRespVo> response = staffService.page(page, createQueryWrapper(vo));
-        List<StaffRespVo> respVos = new ArrayList<>();
+    public R<Page<${entity}RespVo>> listByQuery(Page page, ${entity}QueryVo vo) {
+        Page<${entity}RespVo> response = ${table.entityPath}Service.page(page, createQueryWrapper(vo));
+        List<${entity}RespVo> respVos = new ArrayList<>();
         response.getRecords().forEach(t -> {
-            StaffRespVo respVo = new StaffRespVo();
+            ${entity}RespVo respVo = new ${entity}RespVo();
             BeanUtils.copyProperties(t,respVo);
             respVos.add(respVo);
         });
@@ -61,12 +61,12 @@ public class StaffController {
      * @return R
      */
     @GetMapping("/getById")
-    public R<StaffRespVo> getById(@RequestParam("id") Integer id) {
-        Staff staff = staffService.getById(id);
-        StaffRespVo respVo = new StaffRespVo();
-        if(staff != null){
-            BeanUtils.copyProperties(staff,respVo);
+    public R<${entity}RespVo> getById(@RequestParam("id") Integer id) {
+        ${entity} ${table.entityPath} = ${table.entityPath}Service.getById(id);
+        if(${table.entityPath} == null){
+            return new R<>();
         }
+        ${entity}RespVo respVo = new ${entity}RespVo();
         return new R<>(respVo);
     }
 
@@ -76,10 +76,10 @@ public class StaffController {
      * @return R
      */
     @PostMapping("/add")
-    public R add(@RequestBody StaffAddReqVo vo) {
-        Staff staff = new Staff();
-        BeanUtils.copyProperties(vo,staff);
-        return new R<>(staffService.saveOrUpdate(staff));
+    public R add(@RequestBody ${entity}AddReqVo vo) {
+        ${entity} ${table.entityPath} = new ${entity}();
+        BeanUtils.copyProperties(vo,${table.entityPath});
+        return new R<>(${table.entityPath}Service.saveOrUpdate(${table.entityPath}));
     }
 
     /**
@@ -88,10 +88,10 @@ public class StaffController {
      * @return R
      */
     @PutMapping("/updateById")
-    public R updateById(@RequestBody StaffAddReqVo vo) {
-        Staff staff = new Staff();
-        BeanUtils.copyProperties(vo,staff);
-        return new R<>(staffService.saveOrUpdate(staff));
+    public R updateById(@RequestBody ${entity}AddReqVo vo) {
+        ${entity} ${table.entityPath} = new ${entity}();
+        BeanUtils.copyProperties(vo,${table.entityPath});
+        return new R<>(${table.entityPath}Service.saveOrUpdate(${table.entityPath}));
     }
 
     /**
@@ -101,7 +101,7 @@ public class StaffController {
      */
     @DeleteMapping("/deleteById")
     public R deleteById(@RequestParam("id") Integer id) {
-        return new R<>(staffService.removeById(id));
+        return new R<>(${table.entityPath}Service.removeById(id));
     }
 
     /**
@@ -109,10 +109,10 @@ public class StaffController {
      * @param vo
      * @return
      */
-    public LambdaQueryWrapper createQueryWrapper(StaffQueryVo vo){
-        LambdaQueryWrapper<Staff> queryWrapper = new LambdaQueryWrapper();
+    public LambdaQueryWrapper createQueryWrapper(${entity}QueryVo vo){
+        LambdaQueryWrapper<${entity}> queryWrapper = new LambdaQueryWrapper();
         if(vo.getId() != null){
-            queryWrapper.eq(Staff::getId,vo.getId());
+            queryWrapper.eq(${entity}::getId,vo.getId());
         }
         return queryWrapper;
     }

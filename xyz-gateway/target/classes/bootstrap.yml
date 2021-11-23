@@ -8,6 +8,12 @@ spring:
   security:
     user:
       name: user
+  # spring redis配置
+  redis:
+    host: 10.14.32.231
+    port: 7001
+    password: crss123456
+    database: 14
 zuul:
   # ribbon-isolation-strategy: THREAD  #zuul默认是使用信号量，如果使用线程池，需要在这里配置
   # thread-pool:

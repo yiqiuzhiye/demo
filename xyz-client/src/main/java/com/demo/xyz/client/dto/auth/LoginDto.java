@@ -8,5 +8,5 @@ import java.io.Serializable;
 public class LoginDto implements Serializable {
     private String username;
 
-    private String phone;
+    private String password;
 }
