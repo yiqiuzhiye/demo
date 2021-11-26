@@ -2,22 +2,10 @@
 package com.demo.xyz.common.core;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ValidationException;
-import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * 全局的的异常处理器
@@ -25,7 +13,7 @@ import java.util.Optional;
  * @author admin
  */
 @Slf4j
-@RestControllerAdvice(basePackages = "com.demo.xyz.gateway")
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
 //    /**
@@ -125,7 +113,7 @@ public class GlobalExceptionHandler {
      * @param e
      * @return
      */
-    @ExceptionHandler(value = ServiceException.class)
+    @ExceptionHandler(value = Exception.class)
     public R<Object> validExceptionHandler(HttpServletRequest request, ServiceException e) {
         log.warn("{} 业务异常---> {}", request.getRequestURI(), e.getMessage());
         return new R<>(e.getCode(),e.getMessage());

@@ -7,10 +7,18 @@ import com.demo.xyz.auth.service.IStaffService;
 import com.demo.xyz.auth.vo.StaffAddReqVo;
 import com.demo.xyz.auth.vo.StaffQueryVo;
 import com.demo.xyz.auth.vo.StaffRespVo;
+import com.demo.xyz.common.constant.RedisKey;
+import com.demo.xyz.common.core.CommonUser;
+import com.demo.xyz.common.core.CommonUserContext;
 import com.demo.xyz.common.core.R;
+import com.demo.xyz.common.core.ServiceException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +43,7 @@ import java.util.List;
 @RequestMapping("/v1/staff")
 public class StaffController {
     private final IStaffService staffService;
+    private final RedisTemplate redisTemplate;
 
     /**
      * 简单分页查询
@@ -44,7 +53,8 @@ public class StaffController {
      */
     @GetMapping("/listByQuery")
     public R<Page<StaffRespVo>> listByQuery(Page page, StaffQueryVo vo) {
-        Page<StaffRespVo> response = staffService.page(page, createQueryWrapper(vo));
+        CommonUser user = CommonUserContext.getUser();
+        Page response = staffService.page(page, createQueryWrapper(vo));
         List<StaffRespVo> respVos = new ArrayList<>();
         response.getRecords().forEach(t -> {
             StaffRespVo respVo = new StaffRespVo();
@@ -79,7 +89,14 @@ public class StaffController {
     public R add(@RequestBody StaffAddReqVo vo) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(vo,staff);
-        return new R<>(staffService.saveOrUpdate(staff));
+        PasswordEncoder encoder = new BCryptPasswordEncoder();
+        staff.setPassword(encoder.encode(staff.getPassword()));
+        if(staffService.saveOrUpdate(staff)){
+            CommonUser commonUser = new CommonUser();
+            BeanUtils.copyProperties(staff,commonUser);
+            redisTemplate.opsForValue().set(RedisKey.LOGIN_USER_CACHE_KEY + staff.getUsername(),commonUser);
+        }
+        return new R<>();
     }
 
     /**
@@ -91,7 +108,16 @@ public class StaffController {
     public R updateById(@RequestBody StaffAddReqVo vo) {
         Staff staff = new Staff();
         BeanUtils.copyProperties(vo,staff);
-        return new R<>(staffService.saveOrUpdate(staff));
+        if(StringUtils.isNotBlank(vo.getPassword())){
+            PasswordEncoder encoder = new BCryptPasswordEncoder();
+            staff.setPassword(encoder.encode(staff.getPassword()));
+        }
+        if (staffService.saveOrUpdate(staff)){
+            CommonUser commonUser = new CommonUser();
+            BeanUtils.copyProperties(staff,commonUser);
+            redisTemplate.opsForValue().set(RedisKey.LOGIN_USER_CACHE_KEY + staff.getUsername(),commonUser);
+        }
+        return new R<>();
     }
 
     /**

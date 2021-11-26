@@ -3,6 +3,12 @@ server:
 spring:
   application:
     name: xyz-auth
+  # spring redis配置
+  redis:
+    host: 10.14.32.231
+    port: 7001
+    password: crss123456
+    database: 14
   datasource:
     url: jdbc:mysql://10.14.32.245:3306/x_auth?useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true
     username: root

@@ -1,5 +1,6 @@
 package com.demo.xyz.gateway.config;
 
+import com.demo.xyz.common.core.CommonUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,8 +50,8 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
-        SecurityUser user = (SecurityUser) auth.getPrincipal();
-        String token = jwtTokenUtil.generateToken(user);
+        CommonUser user = (CommonUser) auth.getPrincipal();
+        String token = jwtTokenUtil.generateToken(user.getUsername());
         //redisTemplate.opsForValue().set(user.getCurrentUserInfo().getUsername(), user.getPermissionValueList());
         res.addHeader("Auth",token);
     }

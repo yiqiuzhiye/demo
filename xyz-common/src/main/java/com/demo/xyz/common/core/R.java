@@ -48,8 +48,8 @@ public class R<T> implements Serializable {
     }
 
     public R(final Integer code, String message, T data) {
-        this.code = 200;
-        this.message = "success";
+        this.code = code;
+        this.message = message;
         this.data = data;
     }
 

@@ -44,7 +44,7 @@ public class ${table.controllerName} {
      */
     @GetMapping("/listByQuery")
     public R<Page<${entity}RespVo>> listByQuery(Page page, ${entity}QueryVo vo) {
-        Page<${entity}RespVo> response = ${table.entityPath}Service.page(page, createQueryWrapper(vo));
+        Page response = ${table.entityPath}Service.page(page, createQueryWrapper(vo));
         List<${entity}RespVo> respVos = new ArrayList<>();
         response.getRecords().forEach(t -> {
             ${entity}RespVo respVo = new ${entity}RespVo();

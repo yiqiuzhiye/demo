@@ -1,5 +1,7 @@
 package com.demo.xyz.gateway.config;
 
+import com.demo.xyz.common.core.CommonUser;
+import com.demo.xyz.common.util.MyJsonUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -57,12 +59,12 @@ public class JwtTokenUtil {
     /**
      * 生成令牌
      *
-     * @param userDetails 用户
+     * @param username 用户
      * @return 令牌
      */
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>(2);
-        claims.put(Claims.SUBJECT, userDetails.getUsername());
+        claims.put(Claims.SUBJECT, username);
         claims.put(Claims.ISSUED_AT, new Date());
         return generateToken(claims);
     }
@@ -73,7 +75,7 @@ public class JwtTokenUtil {
      * @param token 令牌
      * @return 用户名
      */
-    public String getUsernameFromToken(String token) {
+    public String getUserFromToken(String token) {
         String username;
         try {
             Claims claims = getClaimsFromToken(token);
@@ -117,16 +119,16 @@ public class JwtTokenUtil {
         }
         return refreshedToken;
     }
-    /**
-     * 验证令牌
-     *
-     * @param token       令牌
-     * @param userDetails 用户
-     * @return 是否有效
-     */
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        SecurityUser user = (SecurityUser) userDetails;
-        String username = getUsernameFromToken(token);
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
-    }
+//    /**
+//     * 验证令牌
+//     *
+//     * @param token       令牌
+//     * @param userDetails 用户
+//     * @return 是否有效
+//     */
+//    public Boolean validateToken(String token, UserDetails userDetails) {
+//        SecurityUser user = (SecurityUser) userDetails;
+//        String username = getUsernameFromToken(token);
+//        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+//    }
 }
