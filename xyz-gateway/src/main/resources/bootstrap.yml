@@ -30,7 +30,8 @@ eureka:
 
 jwt:
   secret: secret
-  expiration: 604800
+  expiration: 3600000
+  refreshExpiration: 259200000
   header: Authorization
 
 

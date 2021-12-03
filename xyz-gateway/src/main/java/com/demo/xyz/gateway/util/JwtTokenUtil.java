@@ -1,15 +1,16 @@
-package com.demo.xyz.gateway.config;
+package com.demo.xyz.gateway.util;
 
-import com.demo.xyz.common.core.CommonUser;
-import com.demo.xyz.common.util.MyJsonUtils;
+import com.demo.xyz.common.constant.RedisKey;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +23,14 @@ public class JwtTokenUtil {
     // 过期时间 毫秒
     @Value("${jwt.expiration}")
     private Long expiration;
+    // 刷新token过期时间 毫秒
+    @Value("${jwt.expiration}")
+    private Long refreshExpiration;
     @Value("${jwt.header}")
     private String header;
+
+    @Resource
+    private RedisTemplate redisTemplate;
  
     /**
      * 从数据声明生成令牌
@@ -31,8 +38,8 @@ public class JwtTokenUtil {
      * @param claims 数据声明
      * @return 令牌
      */
-    private String generateToken(Map<String, Object> claims) {
-        Date expirationDate = new Date(System.currentTimeMillis() + expiration);
+    private String generateToken(Map<String, Object> claims, Long time) {
+        Date expirationDate = new Date(System.currentTimeMillis() + time);
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(expirationDate)
@@ -66,7 +73,18 @@ public class JwtTokenUtil {
         Map<String, Object> claims = new HashMap<>(2);
         claims.put(Claims.SUBJECT, username);
         claims.put(Claims.ISSUED_AT, new Date());
-        return generateToken(claims);
+        return generateToken(claims, expiration);
+    }
+
+    /**
+     * 生成刷新令牌
+     *
+     * @return 令牌
+     */
+    public String generateRefreshToken() {
+        Map<String, Object> claims = new HashMap<>(1);
+        claims.put(Claims.ISSUED_AT, new Date());
+        return generateToken(claims, refreshExpiration);
     }
  
     /**
@@ -94,6 +112,14 @@ public class JwtTokenUtil {
      */
     public Boolean isTokenExpired(String token) {
         try {
+            if(StringUtils.isBlank(token)){
+                return true;
+            }
+            String username = getUserFromToken(token);
+            String cacheToken =(String) redisTemplate.opsForValue().get(RedisKey.LOGIN_USER_TOKEN_CACHE_KEY + username);
+            if(!token.equals(cacheToken)){
+                return true;
+            }
             Claims claims = getClaimsFromToken(token);
             Date expiration = claims.getExpiration();
             return expiration.before(new Date());
@@ -113,22 +139,12 @@ public class JwtTokenUtil {
         try {
             Claims claims = getClaimsFromToken(token);
             claims.put(Claims.ISSUED_AT, new Date());
-            refreshedToken = generateToken(claims);
+            refreshedToken = generateToken(claims, expiration);
+            String username = getUserFromToken(token);
+            redisTemplate.opsForValue().set(RedisKey.LOGIN_USER_TOKEN_CACHE_KEY + username, refreshedToken);
         } catch (Exception e) {
             refreshedToken = null;
         }
         return refreshedToken;
     }
-//    /**
-//     * 验证令牌
-//     *
-//     * @param token       令牌
-//     * @param userDetails 用户
-//     * @return 是否有效
-//     */
-//    public Boolean validateToken(String token, UserDetails userDetails) {
-//        SecurityUser user = (SecurityUser) userDetails;
-//        String username = getUsernameFromToken(token);
-//        return (username.equals(user.getUsername()) && !isTokenExpired(token));
-//    }
 }
